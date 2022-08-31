@@ -1,11 +1,8 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_firebase/app/modules/home/views/home_view.dart';
-import 'package:first_firebase/app/modules/login/views/login_view.dart';
-import 'package:first_firebase/app/modules/signup/views/signup_view.dart';
 import 'package:first_firebase/app/routes/app_pages.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
@@ -19,14 +16,32 @@ class AuthController extends GetxController {
 
   void signUp(String email, String password) async {
     try {
-      await FirebaseAuth.instance
+      UserCredential myUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      Get.offAllNamed(Routes.HOME);
+      await myUser.user!.sendEmailVerification(); // kirim email verifikasi
+      Get.defaultDialog(
+          title: "Email Verifikasi",
+          middleText: "Email verifikasi telah dikirimkan ke $email",
+          textConfirm: "Ok, saya akan cek email",
+          onConfirm: () {
+            Get.back(); // close dialog
+            Get.back(); // go to login
+          });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        log('The password provided is too weak.');
+        Get.snackbar("Warning", "Password lemah",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2));
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        log('The account already exists for that email.');
+        Get.snackbar("Warning", "Email sudah digunakan",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2));
       }
     } catch (e) {
       print(e);
@@ -35,14 +50,43 @@ class AuthController extends GetxController {
 
   void login(String email, String password) async {
     try {
-      await FirebaseAuth.instance
+      UserCredential myUser = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      Get.offAllNamed(Routes.HOME); // Kalau menggunakan routing
+      if (myUser.user!.emailVerified) {
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        Get.defaultDialog(
+            title: "Email Verifikasi",
+            middleText:
+                "Email belum diverifikasi, silahkan verifikasi terlebih dahulu",
+            textConfirm: "Kirim email verifikasi",
+            textCancel: "Cancel",
+            onCancel: () => Get.back(),
+            onConfirm: () async {
+              await myUser.user!.sendEmailVerification();
+              Get.snackbar("Email Verifikasi",
+                  "Email verifikasi telah dikirim ke $email",
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                  snackPosition: SnackPosition.BOTTOM);
+              Get.back();
+            });
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
+        Get.snackbar("Warning", "User tidak ditemukan",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2));
       } else if (e.code == 'wrong-password') {
         log('Wrong password provided for that user.');
+        Get.snackbar("Warning", "Password salah",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2));
       }
     }
   }
