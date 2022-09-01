@@ -42,6 +42,12 @@ class AuthController extends GetxController {
             backgroundColor: Colors.red,
             colorText: Colors.white,
             duration: const Duration(seconds: 2));
+      } else if (!email.isEmail) {
+        Get.snackbar("Warning", "Masukkan email yang valid!",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2));
       }
     } catch (e) {
       log(e.toString());
