@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_firebase/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,8 @@ class AuthController extends GetxController {
   //   return auth.authStateChanges();
   // }
 
-  Stream<User?> get streamAuthStatus => auth.authStateChanges();
+  Stream<User?> get streamAuthStatus =>
+      auth.authStateChanges(); // memantau aktifitas login user
 
   void signUp(String email, String password) async {
     try {
@@ -44,7 +44,7 @@ class AuthController extends GetxController {
             duration: const Duration(seconds: 2));
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -94,5 +94,34 @@ class AuthController extends GetxController {
   void logout() async {
     await FirebaseAuth.instance.signOut();
     Get.offAllNamed(Routes.LOGIN);
+  }
+
+  void resetPassword(String email) async {
+    Get.defaultDialog(
+        title: "Reset password",
+        onCancel: () => Get.back(),
+        textCancel: "Cancel",
+        middleText: "Apakah kamu yakin ingin reset password?",
+        textConfirm: "Reset",
+        confirmTextColor: Colors.red,
+        onConfirm: () async {
+          try {
+            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+            Get.back();
+            Get.snackbar(
+                "Alert", "Link reset password telah dikirim ke email kamu",
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.green,
+                colorText: Colors.white,
+                duration: const Duration(seconds: 3));
+          } on FirebaseAuthException catch (e) {
+            Get.back();
+            Get.snackbar("Alert", "$e",
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+                duration: const Duration(seconds: 3));
+          }
+        });
   }
 }

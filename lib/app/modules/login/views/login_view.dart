@@ -1,5 +1,4 @@
 import 'package:first_firebase/app/controllers/auth_controller.dart';
-import 'package:first_firebase/app/modules/signup/views/signup_view.dart';
 import 'package:first_firebase/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +64,29 @@ class LoginView extends GetView<LoginController> {
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     ),
-                  )
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Lupa password? ",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  GestureDetector(
+                    onTap: () => authC.resetPassword(controller.emailC.text),
+                    child: const Text(
+                      "Reset password",
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
                 ],
               )
             ],
