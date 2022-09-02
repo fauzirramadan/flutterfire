@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_firebase/app/controllers/auth_controller.dart';
-import 'package:first_firebase/app/modules/home/views/home_view.dart';
-import 'package:first_firebase/app/modules/login/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

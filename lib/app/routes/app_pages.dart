@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/add_data/bindings/add_data_binding.dart';
+import '../modules/add_data/views/add_data_view.dart';
+import '../modules/edit_data/bindings/edit_data_binding.dart';
+import '../modules/edit_data/views/edit_data_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -29,6 +33,16 @@ class AppPages {
       name: _Paths.SIGNUP,
       page: () => SignupView(),
       binding: SignupBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_DATA,
+      page: () => const AddDataView(),
+      binding: AddDataBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_DATA,
+      page: () => const EditDataView(),
+      binding: EditDataBinding(),
     ),
   ];
 }
