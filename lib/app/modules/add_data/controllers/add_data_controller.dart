@@ -22,9 +22,13 @@ class AddDataController extends GetxController {
 
   Future<void> addData(String name, String address, int age) async {
     CollectionReference users = firestore.collection("users");
-
-    return await users
-        .add({"name": name, "address": address, "age": age}).then((value) {
+    String dateNow = DateTime.now().toIso8601String();
+    return await users.add({
+      "name": name,
+      "address": address,
+      "age": age,
+      "time": dateNow
+    }).then((value) {
       log("user added");
       nameC.clear();
       ageC.clear();

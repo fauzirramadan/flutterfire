@@ -6,7 +6,7 @@ class HomeController extends GetxController {
 
   Stream<QuerySnapshot<Object?>> getData() {
     CollectionReference dataUser = firestore.collection("users");
-    return dataUser.snapshots();
+    return dataUser.orderBy("time", descending: true).snapshots();
   }
 
   Future<void> deleteData(String docId) {
