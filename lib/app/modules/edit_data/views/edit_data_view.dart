@@ -9,10 +9,7 @@ class EditDataView extends GetView<EditDataController> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Get.arguments;
-    controller.nameC.text = data["name"];
-    controller.addressC.text = data["address"];
-    controller.ageC.text = data["age"].toString();
+    var docid = Get.arguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,8 +87,10 @@ class EditDataView extends GetView<EditDataController> {
                           controller.updateUser(
                               controller.nameC.text,
                               controller.addressC.text,
-                              int.parse(controller.ageC.text),
-                              docId: data);
+                              int.parse(
+                                controller.ageC.text,
+                              ),
+                              docid);
                         },
                         color: Colors.lightBlue,
                         child: const Text("UPDATE DATA"),

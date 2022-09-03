@@ -19,11 +19,12 @@ class EditDataController extends GetxController {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> updateUser(String name, String address, int age,
-      {String? docId}) async {
-    DocumentReference docRef = firestore.collection("users").doc(docId);
+  Future<void> updateUser(
+      String name, String address, int age, String docId) async {
+    CollectionReference docRef = firestore.collection("users");
 
     return await docRef
+        .doc(docId)
         .update({"name": name, "address": address, "age": age}).then((value) {
       log("data berhasil diupdate");
       nameC.clear();

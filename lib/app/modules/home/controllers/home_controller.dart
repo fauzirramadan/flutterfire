@@ -8,4 +8,9 @@ class HomeController extends GetxController {
     CollectionReference dataUser = firestore.collection("users");
     return dataUser.snapshots();
   }
+
+  Future<void> deleteData(String docId) {
+    CollectionReference docRef = firestore.collection("users");
+    return docRef.doc(docId).delete();
+  }
 }

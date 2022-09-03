@@ -41,11 +41,29 @@ class HomeView extends GetView<HomeController> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      Get.toNamed(Routes.EDIT_DATA, arguments: data![index]);
+                      Get.toNamed(Routes.EDIT_DATA, arguments: data![index].id);
                     },
                     title: Text(data?[index]["name"]),
-                    subtitle: Text(data?[index]["address"]),
-                    trailing: Text(data![index]["age"].toString()),
+                    subtitle: Text(
+                        "${data?[index]["address"]} | ${data![index]["age"].toString()}"),
+                    trailing: IconButton(
+                        onPressed: () {
+                          Get.defaultDialog(
+                              middleText:
+                                  "Apakah anda yakin ingin menghapus data ini?",
+                              textCancel: "Cancel",
+                              onCancel: () => Get.back(),
+                              textConfirm: "Sure",
+                              onConfirm: () {
+                                controller.deleteData(data[index].id);
+                                Get.back();
+                                Get.snackbar(
+                                    'info', 'Data successfully deleted',
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white);
+                              });
+                        },
+                        icon: const Icon(Icons.delete_forever)),
                   );
                 });
           }),

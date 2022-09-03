@@ -29,6 +29,7 @@ class AddDataController extends GetxController {
       nameC.clear();
       ageC.clear();
       addressC.clear();
+      Get.back();
       Get.snackbar('info', 'Data successfully added',
           backgroundColor: Colors.green, colorText: Colors.white);
     }).catchError((error) {
