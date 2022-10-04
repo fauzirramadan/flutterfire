@@ -9,7 +9,7 @@ class EditDataView extends GetView<EditDataController> {
 
   @override
   Widget build(BuildContext context) {
-    var docid = Get.arguments;
+    var data = Get.parameters;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,12 +41,10 @@ class EditDataView extends GetView<EditDataController> {
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       controller: controller.nameC,
-                      decoration: const InputDecoration(
-                          label: Text(
-                            "Name",
-                          ),
-                          icon: Icon(Icons.person_rounded),
-                          border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                          hintText: "${data["dataName"]}",
+                          icon: const Icon(Icons.person_rounded),
+                          border: const OutlineInputBorder()),
                     ),
                     const SizedBox(
                       height: 10,
@@ -55,12 +53,10 @@ class EditDataView extends GetView<EditDataController> {
                       textInputAction: TextInputAction.next,
                       controller: controller.ageC,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          label: Text(
-                            "Age",
-                          ),
-                          icon: Icon(Icons.numbers_rounded),
-                          border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                          hintText: "${data["dataAge"]}",
+                          icon: const Icon(Icons.numbers_rounded),
+                          border: const OutlineInputBorder()),
                     ),
                     const SizedBox(
                       height: 10,
@@ -68,12 +64,10 @@ class EditDataView extends GetView<EditDataController> {
                     TextFormField(
                       textInputAction: TextInputAction.done,
                       controller: controller.addressC,
-                      decoration: const InputDecoration(
-                          label: Text(
-                            "Address",
-                          ),
-                          icon: Icon(Icons.place_rounded),
-                          border: OutlineInputBorder()),
+                      decoration: InputDecoration(
+                          hintText: "${data["dataAddress"]}",
+                          icon: const Icon(Icons.place_rounded),
+                          border: const OutlineInputBorder()),
                     ),
                     const SizedBox(
                       height: 20,
@@ -90,7 +84,7 @@ class EditDataView extends GetView<EditDataController> {
                               int.parse(
                                 controller.ageC.text,
                               ),
-                              docid);
+                              data["id"].toString());
                         },
                         color: Colors.lightBlue,
                         child: const Text("UPDATE DATA"),

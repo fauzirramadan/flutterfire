@@ -30,6 +30,7 @@ class EditDataController extends GetxController {
       nameC.clear();
       ageC.clear();
       addressC.clear();
+      Get.back();
       Get.snackbar('info', 'Data successfully update',
           backgroundColor: Colors.green, colorText: Colors.white);
     }).catchError((error) {

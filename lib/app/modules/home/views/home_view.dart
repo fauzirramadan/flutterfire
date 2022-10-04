@@ -26,6 +26,7 @@ class HomeView extends GetView<HomeController> {
           stream: controller.getData(),
           builder: (context, snapshot) {
             final data = snapshot.data?.docs;
+
             if (snapshot.hasError) {
               return const Center(child: Text('Something went wrong'));
             }
@@ -39,9 +40,15 @@ class HomeView extends GetView<HomeController> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: data?.length,
                 itemBuilder: (context, index) {
+                  Map<String, String> dataUser = {
+                    "id": "${data?[index].id}",
+                    "dataName": "${data?[index]["name"]}",
+                    "dataAge": "${data?[index]["age"]}",
+                    "dataAddress": "${data?[index]["address"]}",
+                  };
                   return ListTile(
                     onTap: () {
-                      Get.toNamed(Routes.EDIT_DATA, arguments: data![index].id);
+                      Get.toNamed(Routes.EDIT_DATA, parameters: dataUser);
                     },
                     title: Text(data?[index]["name"]),
                     subtitle: Text(
@@ -54,6 +61,7 @@ class HomeView extends GetView<HomeController> {
                               textCancel: "Cancel",
                               onCancel: () => Get.back(),
                               textConfirm: "Sure",
+                              confirmTextColor: Colors.red,
                               onConfirm: () {
                                 controller.deleteData(data[index].id);
                                 Get.back();
@@ -63,7 +71,10 @@ class HomeView extends GetView<HomeController> {
                                     colorText: Colors.white);
                               });
                         },
-                        icon: const Icon(Icons.delete_forever)),
+                        icon: const Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        )),
                   );
                 });
           }),
